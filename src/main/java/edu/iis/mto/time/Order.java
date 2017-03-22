@@ -34,8 +34,8 @@ public class Order {
 
 	public void confirm() {
 		requireState(State.SUBMITTED);
-		int hoursElapsedAfterSubmittion = Hours.hoursBetween(submissionDate, new DateTime()).getHours();
-		if (hoursElapsedAfterSubmittion > VALID_PERIOD_HOURS) {
+		int hoursElapsedAfterSubmission = Hours.hoursBetween(submissionDate, new DateTime()).getHours();
+		if (hoursElapsedAfterSubmission > VALID_PERIOD_HOURS) {
 			orderState = State.CANCELLED;
 			throw new OrderExpiredException();
 		}
