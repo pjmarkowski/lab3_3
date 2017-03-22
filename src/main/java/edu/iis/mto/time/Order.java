@@ -1,10 +1,14 @@
 package edu.iis.mto.time;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
+
+import fakeSystemClock.AdvancedTimeSrc;
+import fakeSystemClock.DefaultTimeSrc;
 
 public class Order {
 	private static final int VALID_PERIOD_HOURS = 24;
@@ -28,13 +32,13 @@ public class Order {
 		requireState(State.CREATED);
 
 		orderState = State.SUBMITTED;
-		submissionDate = new DateTime();
+		submissionDate = new DateTime(new DefaultTimeSrc().currentTimeMillis());
 
 	}
 
 	public void confirm() {
 		requireState(State.SUBMITTED);
-		int hoursElapsedAfterSubmission = Hours.hoursBetween(submissionDate, new DateTime()).getHours();
+		int hoursElapsedAfterSubmission = Hours.hoursBetween(submissionDate, new DateTime(new AdvancedTimeSrc().currentTimeMillis())).getHours();
 		if (hoursElapsedAfterSubmission > VALID_PERIOD_HOURS) {
 			orderState = State.CANCELLED;
 			throw new OrderExpiredException();
