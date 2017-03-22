@@ -14,19 +14,18 @@ public class OrderTest {
 	@Before
 	public void setupTests() {
 		testOrder = new Order();
+		testOrder.submit();
 	}
 	
 	@Test
 	public void orderNotYetExpired() {
 		AlteredTimeProvider.howMuchToAdd = 24 * 60 * 60 * 1000;
-		testOrder.submit();
 		testOrder.confirm();
 	}
 	
 	@Test (expected = OrderExpiredException.class)
 	public void orderExpired() {
 		AlteredTimeProvider.howMuchToAdd = 24 * 60 * 60 * 1000 + 60 * 60 * 1000;
-		testOrder.submit();
 		testOrder.confirm();
 	}
 }
