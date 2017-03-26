@@ -30,7 +30,7 @@ public class Order {
 		requireState(State.CREATED);
 
 		orderState = State.SUBMITTED;
-		subbmitionDate = new DateTime(new TimeProvider().currentTimeMillis());
+		subbmitionDate = new DateTime();
 
 	}
 
