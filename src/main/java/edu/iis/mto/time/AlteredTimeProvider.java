@@ -2,11 +2,11 @@ package edu.iis.mto.time;
 
 public class AlteredTimeProvider implements ITime {
 
-	public static long howMuchToAdd = 0;
+	private static final long TWO_DAYS = 24 * 60 * 60 * 1000 * 2;
 	
 	@Override
 	public long currentTimeMillis() {
-		return System.currentTimeMillis() + howMuchToAdd;
+		return System.currentTimeMillis() + TWO_DAYS;
 	}
 	
 }
