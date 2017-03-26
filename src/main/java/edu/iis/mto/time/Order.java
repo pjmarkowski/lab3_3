@@ -9,15 +9,22 @@ import org.joda.time.Hours;
 
 import fakeSystemClock.AdvancedTimeSrc;
 import fakeSystemClock.DefaultTimeSrc;
+import fakeSystemClock.TimeSource;
 
 public class Order {
 	private static final int VALID_PERIOD_HOURS = 24;
 	private State orderState;
 	private List<OrderItem> items = new ArrayList<OrderItem>();
 	private DateTime submissionDate;
+	private TimeSource timeSource;
 
 	public Order() {
 		orderState = State.CREATED;
+	}
+
+	public Order(TimeSource timeSource) {
+		orderState = State.CREATED;
+		this.timeSource = timeSource;
 	}
 
 	public void addItem(OrderItem item) {
@@ -25,20 +32,19 @@ public class Order {
 
 		items.add(item);
 		orderState = State.CREATED;
-
 	}
 
 	public void submit() {
 		requireState(State.CREATED);
 
 		orderState = State.SUBMITTED;
-		submissionDate = new DateTime(new DefaultTimeSrc().currentTimeMillis());
-
+		submissionDate = new DateTime();
 	}
 
 	public void confirm() {
 		requireState(State.SUBMITTED);
-		int hoursElapsedAfterSubmission = Hours.hoursBetween(submissionDate, new DateTime(new AdvancedTimeSrc().currentTimeMillis())).getHours();
+		int hoursElapsedAfterSubmission = Hours
+				.hoursBetween(submissionDate, new DateTime(timeSource.currentTimeMillis())).getHours();
 		if (hoursElapsedAfterSubmission > VALID_PERIOD_HOURS) {
 			orderState = State.CANCELLED;
 			throw new OrderExpiredException();
