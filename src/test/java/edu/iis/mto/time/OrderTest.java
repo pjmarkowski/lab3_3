@@ -2,11 +2,7 @@ package edu.iis.mto.time;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 
-/**
- * Created by Klaudia on 04.04.2017.
- */
 public class OrderTest {
 
     @Test(expected = OrderExpiredException.class)
@@ -15,4 +11,12 @@ public class OrderTest {
         order.submit();
         order.confirm();
     }
+
+    @Test
+    public void confirmDefaultTime() {
+        Order order = new Order(new DefaultTimeSrc());
+        order.submit();
+        order.confirm();
+    }
+
 }
