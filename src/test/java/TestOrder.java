@@ -1,3 +1,7 @@
+import edu.iis.mto.time.AdditionalTime;
+import edu.iis.mto.time.DefaultTime;
+import edu.iis.mto.time.Order;
+import edu.iis.mto.time.OrderExpiredException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -7,8 +11,10 @@ import static org.junit.Assert.*;
  */
 public class TestOrder {
 
-    @Test
-    public void test() {
-        fail("fail");
+    @Test(expected = OrderExpiredException.class)
+    public void shouldReturnExceptionWhenCalledConfirmWithAdditionalTime() {
+        Order order = new Order(new AdditionalTime());
+        order.submit();
+        order.confirm();
     }
 }
